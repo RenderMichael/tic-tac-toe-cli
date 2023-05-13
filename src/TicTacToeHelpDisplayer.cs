@@ -6,7 +6,7 @@ public static class TicTacToeHelpDisplayer
     {
         var help =
             "Description:" + Environment.NewLine +
-            "  Plays a game of Tic-Tac-Toe." + Environment.NewLine + Environment.NewLine +
+            "  Plays a game of Tic-Tac-Toe. Controls are the with the number pad." + Environment.NewLine + Environment.NewLine +
             "Usage:" + Environment.NewLine +
             "  dotnet run" + Environment.NewLine + Environment.NewLine +
             "Options:" + Environment.NewLine +
