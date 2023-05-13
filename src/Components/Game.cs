@@ -9,6 +9,8 @@ public sealed class Game
 
     private Square? winner;
 
+    private Square currentTurn = Square.X;
+
     private bool lastTurnOccupied;
 
     internal Game(TicTacToeContext player)
@@ -39,15 +41,13 @@ public sealed class Game
         }
     }
 
-    public Square CurrentTurn { get; private set; } = Square.X;
-
     public void DoTurn()
     {
         this.LogBoard();
         var key = this.player.CharReader.ReadChar();
         (var x, var y) = this.player.SquareSelector.ParseCoordinates(key);
 
-        if (this.board.TryPlace(this.CurrentTurn, x, y))
+        if (this.board.TryPlace(this.currentTurn, x, y))
         {
             this.FlipTurn();
             this.lastTurnOccupied = false;
@@ -62,7 +62,7 @@ public sealed class Game
     {
         this.player.Writer.Reset();
 
-        this.player.Writer.WriteLine($"It's {this.CurrentTurn}'s turn!");
+        this.player.Writer.WriteLine($"It's {this.currentTurn}'s turn!");
         this.player.Writer.WriteLine(this.board.BoardString);
         this.player.Writer.WriteLine("");
         this.player.Writer.WriteLine(this.GetOccupationLog());
@@ -79,7 +79,7 @@ public sealed class Game
         return "                 ";
     }
 
-    private void FlipTurn() => this.CurrentTurn = this.CurrentTurn == Square.X ? Square.O : Square.X;
+    private void FlipTurn() => this.currentTurn = this.currentTurn == Square.X ? Square.O : Square.X;
 
     public void LogWinner()
     {
