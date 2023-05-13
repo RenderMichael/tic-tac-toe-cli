@@ -1,54 +1,38 @@
 namespace Michael.TicTacToe.Components;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using Michael.TicTacToe.Components.CharReaders;
-using Michael.TicTacToe.Components.SquareSelectors;
-using Michael.TicTacToe.Components.WinnerCheckers;
-using Michael.TicTacToe.Components.Writers;
 
 public sealed class Game
 {
     private readonly Board board;
 
-    private readonly IWinnerCheckable winnerChecker;
+    private readonly TicTacToeContext player;
 
-    private readonly ICharReader charReader;
-
-    private readonly IWriter writer;
-
-    private readonly ISquareSelector squareSelector;
+    private Square? winner;
 
     private bool lastTurnOccupied;
 
-    internal Game(string title, IWinnerCheckable winnerChecker, ICharReader charReader, IWriter writer, ISquareSelector squareSelector)
+    internal Game(TicTacToeContext player)
     {
-        this.winnerChecker = winnerChecker;
-        this.charReader = charReader;
-        this.writer = writer;
-        this.squareSelector = squareSelector;
-
-        this.InitializeWriter(title);
+        this.player = player;
+        this.board = new Board();
+        this.InitializeWriter();
     }
 
-    private void InitializeWriter(string title)
+    private void InitializeWriter()
     {
-        this.writer.SetTitle(title);
-        this.writer.Clear();
-        this.writer.WriteTitleMessage();
+        this.player.Writer.SetTitle(this.player.Title);
+        this.player.Writer.Clear();
+        this.player.Writer.WriteTitleMessage();
     }
 
-    public bool PlaceX(int x, int y) => this.board.Place(Square.X, x, y);
-
-    public bool PlaceO(int x, int y) => this.board.Place(Square.O, x, y);
-
-    [MemberNotNullWhen(true, nameof(Winner))]
+    [MemberNotNullWhen(true, nameof(winner))]
     public bool IsGameOver
     {
         get
         {
-            if (this.winnerChecker.CheckWinner(this.board, out var winner))
+            if (this.player.WinnerChecker.CheckWinner(this.board, out var winner))
             {
-                this.Winner = winner;
+                this.winner = winner;
                 return true;
             }
             return false;
@@ -57,15 +41,13 @@ public sealed class Game
 
     public Square CurrentTurn { get; private set; } = Square.X;
 
-    public Square? Winner { get; private set; }
-
     public void DoTurn()
     {
         this.LogBoard();
-        var key = this.charReader.ReadChar();
-        (var x, var y) = this.squareSelector.ParseCoordinates(key);
+        var key = this.player.CharReader.ReadChar();
+        (var x, var y) = this.player.SquareSelector.ParseCoordinates(key);
 
-        if (this.TryPlace(x, y))
+        if (this.board.TryPlace(this.CurrentTurn, x, y))
         {
             this.FlipTurn();
             this.lastTurnOccupied = false;
@@ -78,43 +60,32 @@ public sealed class Game
 
     private void LogBoard()
     {
-        this.writer.Reset();
+        this.player.Writer.Reset();
 
-        this.writer.WriteLine($"It's {this.CurrentTurn}'s turn!");
-        this.writer.WriteLine(this.board.BoardString);
-        this.writer.WriteLine("");
-        this.writer.WriteLine(this.GetOccupationLog());
+        this.player.Writer.WriteLine($"It's {this.CurrentTurn}'s turn!");
+        this.player.Writer.WriteLine(this.board.BoardString);
+        this.player.Writer.WriteLine("");
+        this.player.Writer.WriteLine(this.GetOccupationLog());
     }
 
     private string GetOccupationLog()
     {
         if (this.lastTurnOccupied)
         {
-            this.writer.Beep();
+            this.player.Writer.Beep();
             return "Already occupied!";
         }
 
         return "                 ";
     }
 
-    private bool TryPlace(int x, int y)
-    {
-        if (this.CurrentTurn == Square.X)
-        {
-            return this.PlaceX(x, y);
-        }
-
-        Debug.Assert(this.CurrentTurn == Square.O);
-        return this.PlaceO(x, y);
-    }
-
     private void FlipTurn() => this.CurrentTurn = this.CurrentTurn == Square.X ? Square.O : Square.X;
 
     public void LogWinner()
     {
-        var winner = this.Winner ?? throw new InvalidOperationException("Cannot log winner of an incomplete game.");
+        var winner = this.winner ?? throw new InvalidOperationException("Cannot log winner of an incomplete game.");
 
         this.LogBoard();
-        this.writer.WriteLine(winner == Square.Empty ? "Tie!" : $"The winner is {winner}!");
+        this.player.Writer.WriteLine(winner is Square.Empty ? "Tie!" : $"The winner is {winner}!");
     }
 }

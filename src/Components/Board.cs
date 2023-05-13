@@ -1,4 +1,5 @@
 namespace Michael.TicTacToe.Components;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 public readonly struct Board : IEquatable<Board>
@@ -15,16 +16,9 @@ public readonly struct Board : IEquatable<Board>
         return this.squares[x - 1, y - 1];
     }
 
-    private void SetValue(Square value, int x, int y)
+    public readonly bool TryPlace(Square square, int x, int y)
     {
-        ThrowIfOutOfRange(x);
-        ThrowIfOutOfRange(y);
-
-        this.squares[x - 1, y - 1] = value;
-    }
-
-    public bool Place(Square square, int x, int y)
-    {
+        ThrowIfInvalidValue(square);
         ThrowIfOutOfRange(x);
         ThrowIfOutOfRange(y);
 
@@ -32,27 +26,43 @@ public readonly struct Board : IEquatable<Board>
 
         if (val == Square.Empty)
         {
-            this.SetValue(square, x, y);
+            this.squares[x - 1, y - 1] = square;
             return true;
         }
         return false;
     }
 
     public readonly string BoardString =>
-        "^[4m" + GetSpaceDisplay(this.squares[0, 0]) + "|" + GetSpaceDisplay(this.squares[0, 1]) + "|" + GetSpaceDisplay(this.squares[0, 2]) + "" + Environment.NewLine +
+        GetSpaceDisplay(this.squares[0, 0]) + "|" + GetSpaceDisplay(this.squares[0, 1]) + "|" + GetSpaceDisplay(this.squares[0, 2]) + "" + Environment.NewLine +
         "-----" + Environment.NewLine +
-        "^[4m" + GetSpaceDisplay(this.squares[1, 0]) + "|" + GetSpaceDisplay(this.squares[1, 1]) + "|" + GetSpaceDisplay(this.squares[1, 2]) + "" + Environment.NewLine +
+        GetSpaceDisplay(this.squares[1, 0]) + "|" + GetSpaceDisplay(this.squares[1, 1]) + "|" + GetSpaceDisplay(this.squares[1, 2]) + "" + Environment.NewLine +
         "-----" + Environment.NewLine +
         GetSpaceDisplay(this.squares[2, 0]) + "|" + GetSpaceDisplay(this.squares[2, 1]) + "|" + GetSpaceDisplay(this.squares[2, 2]);
 
     private static void ThrowIfOutOfRange(int coord, [CallerArgumentExpression("coord")] string? paramName = null)
     {
-        if (coord < 1 || ((uint)coord > 3))
+        if (coord is >= 1 and <= 3)
         {
-            ThrowOutOfRange(paramName);
+            return;
         }
+
+        ThrowOutOfRange(paramName);
     }
 
+    private static void ThrowIfInvalidValue(Square square)
+    {
+        if (Enum.IsDefined(square))
+        {
+            return;
+        }
+
+        ThrowInvalidValue(square);
+    }
+
+    [DoesNotReturn]
+    private static void ThrowInvalidValue(Square square) => throw new ArgumentException($"Invalid argument value: {square}", nameof(square));
+
+    [DoesNotReturn]
     private static void ThrowOutOfRange(string? paramName) => throw new ArgumentOutOfRangeException(paramName, "X must be between 1, 2, or 3");
 
     private static char GetSpaceDisplay(Square sq) => sq switch
@@ -63,11 +73,11 @@ public readonly struct Board : IEquatable<Board>
         _ => throw new NotImplementedException()
     };
 
-    public bool Equals(Board other) => this.squares.Equals(other.squares);
+    public readonly bool Equals(Board other) => this.squares.Equals(other.squares);
 
-    public override bool Equals(object? obj) => obj is Board board && this.Equals(board);
+    public override readonly bool Equals(object? obj) => obj is Board board && this.Equals(board);
 
-    public override int GetHashCode() => this.squares.GetHashCode();
+    public override readonly int GetHashCode() => this.squares.GetHashCode();
 
     public static bool operator ==(Board left, Board right) => left.Equals(right);
 
