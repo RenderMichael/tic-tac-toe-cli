@@ -1,5 +1,4 @@
 namespace Michael.TicTacToe;
-using Michael.TicTacToe.Components;
 using Michael.TicTacToe.Components.CharReaders;
 using Michael.TicTacToe.Components.SquareSelectors;
 using Michael.TicTacToe.Components.WinnerCheckers;
@@ -40,17 +39,4 @@ public sealed class TicTacToeContext
         writer: new ConsoleWriter(),
         squareSelector: new NumPadSquareSelector()
     );
-
-    public void PlayGame()
-    {
-        var game = new Game(this);
-
-        do
-        {
-            game.DoTurn();
-        }
-        while (!game.IsGameOver);
-
-        game.LogWinner();
-    }
 }

@@ -3,7 +3,7 @@ using Michael.TicTacToe;
 
 if (args.Length == 0)
 {
-    TicTacToeContext.Default.PlayGame();
+    TicTacToePlayer.Play(TicTacToeContext.Default);
 }
 else if (args.Length == 1 && args[0] is "--help" or "-h" or "-?")
 {
