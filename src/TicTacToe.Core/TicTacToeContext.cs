@@ -1,8 +1,6 @@
-namespace Michael.TicTacToe;
-using Michael.TicTacToe.Components.CharReaders;
-using Michael.TicTacToe.Components.SquareSelectors;
-using Michael.TicTacToe.Components.WinnerCheckers;
-using Michael.TicTacToe.Components.Writers;
+namespace Michael.TicTacToe.Core;
+
+using Michael.TicTacToe.Core.ContextComponents;
 
 public sealed class TicTacToeContext
 {
@@ -30,13 +28,4 @@ public sealed class TicTacToeContext
 
         this.Writer.SetTitleMessage(this.TitleMessage);
     }
-
-    public static TicTacToeContext Default { get; } = new TicTacToeContext(
-        title: "Tic-Tac-Toe",
-        titleMessage: "Welcome to Tic Tac Toe!",
-        winnerChecker: new WinnerCheckerManual(),
-        charReader: new ConsoleCharReader(),
-        writer: new ConsoleWriter(),
-        squareSelector: new NumPadSquareSelector()
-    );
 }

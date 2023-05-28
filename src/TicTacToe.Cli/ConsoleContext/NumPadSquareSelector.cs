@@ -1,4 +1,6 @@
-namespace Michael.TicTacToe.Components.SquareSelectors;
+namespace Michael.TicTacToe.Cli.ConsoleContext;
+
+using Michael.TicTacToe.Core.ContextComponents;
 
 public sealed class NumPadSquareSelector : ISquareSelector
 {

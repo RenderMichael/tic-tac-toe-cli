@@ -1,4 +1,4 @@
-namespace Michael.TicTacToe.Components.CharReaders;
+namespace Michael.TicTacToe.Core.ContextComponents;
 
 public interface ICharReader
 {

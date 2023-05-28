@@ -1,4 +1,6 @@
-namespace Michael.TicTacToe.Components.WinnerCheckers;
+namespace Michael.TicTacToe.Core.ContextComponents;
+
+using Michael.TicTacToe.Core.Components;
 
 public sealed class WinnerCheckerManual : IWinnerCheckable
 {

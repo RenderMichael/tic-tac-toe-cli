@@ -1,4 +1,4 @@
-namespace Michael.TicTacToe;
+namespace Michael.TicTacToe.Cli;
 
 public static class TicTacToeHelpDisplayer
 {

@@ -1,4 +1,4 @@
-namespace Michael.TicTacToe.Components;
+namespace Michael.TicTacToe.Core.Components;
 using System.Diagnostics.CodeAnalysis;
 
 public sealed class Game

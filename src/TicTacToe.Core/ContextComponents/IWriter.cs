@@ -1,4 +1,4 @@
-namespace Michael.TicTacToe.Components.Writers;
+namespace Michael.TicTacToe.Core.ContextComponents;
 
 public interface IWriter
 {

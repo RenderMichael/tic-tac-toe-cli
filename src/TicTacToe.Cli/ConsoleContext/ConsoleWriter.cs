@@ -1,4 +1,6 @@
-namespace Michael.TicTacToe.Components.Writers;
+namespace Michael.TicTacToe.Cli.ConsoleContext;
+
+using Michael.TicTacToe.Core.ContextComponents;
 
 public sealed class ConsoleWriter : IWriter
 {

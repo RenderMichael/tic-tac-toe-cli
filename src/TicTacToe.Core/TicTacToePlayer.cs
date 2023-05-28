@@ -1,5 +1,5 @@
-namespace Michael.TicTacToe;
-using Michael.TicTacToe.Components;
+namespace Michael.TicTacToe.Core;
+using Michael.TicTacToe.Core.Components;
 
 public sealed class TicTacToePlayer
 {
