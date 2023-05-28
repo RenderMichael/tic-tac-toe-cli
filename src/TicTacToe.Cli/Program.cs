@@ -7,12 +7,12 @@ using Michael.TicTacToe.Core.ContextComponents;
 if (args.Length == 0)
 {
     var defaultContext = new TicTacToeContext(
-        title: "Tic-Tac-Toe",
-        titleMessage: "Welcome to Tic Tac Toe!",
-        winnerChecker: new WinnerCheckerManual(),
-        charReader: new ConsoleCharReader(),
-        writer: new ConsoleWriter(),
-        squareSelector: new NumPadSquareSelector()
+        Title: "Tic-Tac-Toe",
+        TitleMessage: "Welcome to Tic Tac Toe!",
+        WinnerChecker: new WinnerCheckerManual(),
+        CharReader: new ConsoleCharReader(),
+        Writer: new ConsoleWriter(),
+        SquareSelector: new NumPadSquareSelector()
     );
     TicTacToePlayer.Play(defaultContext);
 }

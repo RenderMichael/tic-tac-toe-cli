@@ -22,6 +22,7 @@ public sealed class Game
 
     private void InitializeWriter()
     {
+        this.player.Writer.SetTitleMessage(this.player.TitleMessage);
         this.player.Writer.SetTitle(this.player.Title);
         this.player.Writer.Clear();
         this.player.Writer.WriteTitleMessage();
