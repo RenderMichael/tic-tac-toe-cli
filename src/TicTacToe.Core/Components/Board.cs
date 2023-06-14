@@ -39,7 +39,7 @@ public readonly struct Board : IEquatable<Board>
         "-----" + Environment.NewLine +
         GetSpaceDisplay(this.squares[2, 0]) + "|" + GetSpaceDisplay(this.squares[2, 1]) + "|" + GetSpaceDisplay(this.squares[2, 2]);
 
-    private static void ThrowIfOutOfRange(int coord, [CallerArgumentExpression("coord")] string? paramName = null)
+    private static void ThrowIfOutOfRange(int coord, [CallerArgumentExpression(nameof(coord))] string? paramName = null)
     {
         if (coord is >= 1 and <= 3)
         {
