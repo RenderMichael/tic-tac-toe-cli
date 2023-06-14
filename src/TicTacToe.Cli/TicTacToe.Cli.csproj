@@ -5,6 +5,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>Michael.TicTacToe.Cli</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
+    <PublishTrimmed>true</PublishTrimmed>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
