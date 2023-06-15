@@ -2,11 +2,25 @@ using System.Runtime.CompilerServices;
 using Michael.TicTacToe.Cli;
 using Michael.TicTacToe.Cli.ConsoleContext;
 using Michael.TicTacToe.Core;
+using Michael.TicTacToe.Core.Components;
 using Michael.TicTacToe.Core.Interfaces;
 
 if (args.Length == 0)
 {
-    var defaultContext = new TicTacToeContext(
+    PlayGame();
+    return;
+}
+if (args.Length == 1 && args[0] is "--help" or "-h" or "-?")
+{
+    TicTacToeHelpDisplayer.DisplayHelpMessage();
+    return;
+}
+
+LogErrorMessage(args);
+
+static void PlayGame()
+{
+    var context = new TicTacToeContext(
         Title: "Tic-Tac-Toe",
         TitleMessage: "Welcome to Tic Tac Toe!",
         WinnerChecker: new WinnerCheckerManual(),
@@ -14,15 +28,15 @@ if (args.Length == 0)
         Writer: new ConsoleWriter(),
         SquareSelector: new NumPadSquareSelector()
     );
-    TicTacToePlayer.Play(defaultContext);
-}
-else if (args.Length == 1 && args[0] is "--help" or "-h" or "-?")
-{
-    TicTacToeHelpDisplayer.DisplayHelpMessage();
-}
-else
-{
-    LogErrorMessage(args);
+    var game = new Game(context);
+
+    do
+    {
+        game.DoTurn();
+    }
+    while (!game.IsGameOver);
+
+    game.LogWinner();
 }
 
 [MethodImpl(MethodImplOptions.NoInlining)] // Cold path
