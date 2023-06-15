@@ -13,9 +13,9 @@ public sealed class Game
 
     private bool lastTurnOccupied;
 
-    internal Game(TicTacToeContext player)
+    public Game(TicTacToeContext player)
     {
-        this.player = player;
+        this.player = player ?? throw new ArgumentNullException(nameof(player));
         this.board = new Board();
         this.InitializeWriter();
     }
