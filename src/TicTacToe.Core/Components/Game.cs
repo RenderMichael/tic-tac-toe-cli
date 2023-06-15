@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 public sealed class Game
 {
-    private readonly Board board;
+    public Board Board { get; }
 
     private readonly TicTacToeContext player;
 
@@ -16,7 +16,7 @@ public sealed class Game
     public Game(TicTacToeContext player)
     {
         this.player = player ?? throw new ArgumentNullException(nameof(player));
-        this.board = new Board();
+        this.Board = new Board();
         this.InitializeWriter();
     }
 
@@ -33,7 +33,7 @@ public sealed class Game
     {
         get
         {
-            if (this.player.WinnerChecker.CheckWinner(this.board, out var winner))
+            if (this.player.WinnerChecker.CheckWinner(this.Board, out var winner))
             {
                 this.winner = winner;
                 return true;
@@ -48,7 +48,7 @@ public sealed class Game
         var key = this.player.CharReader.ReadChar();
         (var x, var y) = this.player.SquareSelector.ParseCoordinates(key);
 
-        if (this.board.TryPlace(this.currentTurn, x, y))
+        if (this.Board.TryPlace(this.currentTurn, x, y))
         {
             this.FlipTurn();
             this.lastTurnOccupied = false;
@@ -64,7 +64,7 @@ public sealed class Game
         this.player.Writer.Reset();
 
         this.player.Writer.WriteLine($"It's {this.currentTurn}'s turn!");
-        this.player.Writer.WriteLine(this.board.BoardString);
+        this.player.Writer.WriteLine(this.Board.BoardString);
         this.player.Writer.WriteLine("");
         this.player.Writer.WriteLine(this.GetOccupationLog());
     }
