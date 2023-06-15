@@ -1,6 +1,6 @@
 namespace Michael.TicTacToe.Cli.ConsoleContext;
 
-using Michael.TicTacToe.Core.ContextComponents;
+using Michael.TicTacToe.Core.Interfaces;
 
 public sealed class ConsoleCharReader : ICharReader
 {

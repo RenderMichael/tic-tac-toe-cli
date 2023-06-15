@@ -1,4 +1,4 @@
-namespace Michael.TicTacToe.Core.ContextComponents;
+namespace Michael.TicTacToe.Core.Interfaces;
 
 public interface ISquareSelector
 {

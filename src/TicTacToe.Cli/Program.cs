@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 using Michael.TicTacToe.Cli;
 using Michael.TicTacToe.Cli.ConsoleContext;
 using Michael.TicTacToe.Core;
-using Michael.TicTacToe.Core.ContextComponents;
+using Michael.TicTacToe.Core.Interfaces;
 
 if (args.Length == 0)
 {
