@@ -44,7 +44,6 @@ public sealed class Game
 
     public void DoTurn()
     {
-        this.LogBoard();
         var key = this.context.CharReader.ReadChar();
         (var x, var y) = this.context.SquareSelector.ParseCoordinates(key);
 
@@ -59,7 +58,7 @@ public sealed class Game
         }
     }
 
-    private void LogBoard()
+    public void LogBoard()
     {
         this.context.Writer.Reset();
 
@@ -86,7 +85,6 @@ public sealed class Game
     {
         var winner = this.winner ?? throw new InvalidOperationException("Cannot log winner of an incomplete game.");
 
-        this.LogBoard();
         this.context.Writer.WriteLine(winner is Square.Empty ? "Tie!" : $"The winner is {winner}!");
     }
 }

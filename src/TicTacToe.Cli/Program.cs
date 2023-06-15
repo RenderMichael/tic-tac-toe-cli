@@ -32,10 +32,12 @@ static void PlayGame()
 
     do
     {
+        game.LogBoard();
         game.DoTurn();
     }
     while (!game.IsGameOver);
 
+    game.LogBoard();
     game.LogWinner();
 }
 
