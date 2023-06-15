@@ -65,10 +65,10 @@ public sealed class Game
         this.context.Writer.WriteLine($"It's {this.currentTurn}'s turn!");
         this.context.Writer.WriteLine(this.Board.BoardString);
         this.context.Writer.WriteLine("");
-        this.context.Writer.WriteLine(this.GetOccupationLog());
+        this.context.Writer.WriteLine(this.GetOccupiedLog());
     }
 
-    private string GetOccupationLog()
+    private string GetOccupiedLog()
     {
         if (this.lastTurnOccupied)
         {
