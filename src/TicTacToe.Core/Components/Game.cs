@@ -1,41 +1,42 @@
-namespace Michael.TicTacToe.Core.Components;
 using System.Diagnostics.CodeAnalysis;
+
+namespace Michael.TicTacToe.Core.Components;
 
 public sealed class Game
 {
     public Board Board { get; }
 
-    private readonly TicTacToeContext context;
+    private readonly TicTacToeContext _context;
 
-    private Square? winner;
+    private Square? _winner;
 
-    private Square currentTurn = Square.X;
+    private Square _currentTurn = Square.X;
 
-    private bool lastTurnOccupied;
+    private bool _lastTurnOccupied;
 
     public Game(TicTacToeContext context)
     {
-        this.context = context ?? throw new ArgumentNullException(nameof(context));
-        this.Board = new Board();
-        this.InitializeWriter();
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+        Board = new Board();
+        InitializeWriter();
     }
 
     private void InitializeWriter()
     {
-        this.context.Writer.SetTitleMessage(this.context.TitleMessage);
-        this.context.Writer.SetTitle(this.context.Title);
-        this.context.Writer.Clear();
-        this.context.Writer.WriteTitleMessage();
+        _context.Writer.SetTitleMessage(_context.TitleMessage);
+        _context.Writer.SetTitle(_context.Title);
+        _context.Writer.Clear();
+        _context.Writer.WriteTitleMessage();
     }
 
-    [MemberNotNullWhen(true, nameof(winner))]
+    [MemberNotNullWhen(true, nameof(_winner))]
     public bool IsGameOver
     {
         get
         {
-            if (this.context.WinnerChecker.CheckWinner(this.Board, out var winner))
+            if (_context.WinnerChecker.CheckWinner(Board, out Square winner))
             {
-                this.winner = winner;
+                _winner = winner;
                 return true;
             }
             return false;
@@ -44,47 +45,47 @@ public sealed class Game
 
     public void DoTurn()
     {
-        var key = this.context.CharReader.ReadChar();
-        (var x, var y) = this.context.SquareSelector.ParseCoordinates(key);
+        char key = _context.CharReader.ReadChar();
+        (int x, int y) = _context.SquareSelector.ParseCoordinates(key);
 
-        if (this.Board.TryPlace(this.currentTurn, x, y))
+        if (Board.TryPlace(_currentTurn, x, y))
         {
-            this.FlipTurn();
-            this.lastTurnOccupied = false;
+            FlipTurn();
+            _lastTurnOccupied = false;
         }
         else
         {
-            this.lastTurnOccupied = true;
+            _lastTurnOccupied = true;
         }
     }
 
     public void LogBoard()
     {
-        this.context.Writer.Reset();
+        _context.Writer.Reset();
 
-        this.context.Writer.WriteLine($"It's {this.currentTurn}'s turn!");
-        this.context.Writer.WriteLine(this.Board.BoardString);
-        this.context.Writer.WriteLine("");
-        this.context.Writer.WriteLine(this.GetOccupiedLog());
+        _context.Writer.WriteLine($"It's {_currentTurn}'s turn!");
+        _context.Writer.WriteLine(Board.BoardString);
+        _context.Writer.WriteLine("");
+        _context.Writer.WriteLine(GetOccupiedLog());
     }
 
     private string GetOccupiedLog()
     {
-        if (this.lastTurnOccupied)
+        if (_lastTurnOccupied)
         {
-            this.context.Writer.Beep();
+            _context.Writer.Beep();
             return "Already occupied!";
         }
 
         return "                 ";
     }
 
-    private void FlipTurn() => this.currentTurn = this.currentTurn == Square.X ? Square.O : Square.X;
+    private void FlipTurn() => _currentTurn = _currentTurn == Square.X ? Square.O : Square.X;
 
     public void LogWinner()
     {
-        var winner = this.winner ?? throw new InvalidOperationException("Cannot log winner of an incomplete game.");
+        Square winner = _winner ?? throw new InvalidOperationException("Cannot log winner of an incomplete game.");
 
-        this.context.Writer.WriteLine(winner is Square.Empty ? "Tie!" : $"The winner is {winner}!");
+        _context.Writer.WriteLine(winner is Square.Empty ? "Tie!" : $"The winner is {winner}!");
     }
 }

@@ -1,6 +1,6 @@
-namespace Michael.TicTacToe.Core.Interfaces;
-
 using Michael.TicTacToe.Core.Components;
+
+namespace Michael.TicTacToe.Core.Interfaces;
 
 public interface IWinnerCheckable
 {

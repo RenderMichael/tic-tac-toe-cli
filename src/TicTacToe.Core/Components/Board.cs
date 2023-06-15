@@ -1,19 +1,20 @@
-namespace Michael.TicTacToe.Core.Components;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
+namespace Michael.TicTacToe.Core.Components;
+
 public readonly struct Board : IEquatable<Board>
 {
-    private readonly Square[,] squares;
+    private readonly Square[,] _squares;
 
-    public Board() => this.squares = new Square[3, 3];
+    public Board() => _squares = new Square[3, 3];
 
     public readonly Square GetValue(int x, int y)
     {
         ThrowIfOutOfRange(x);
         ThrowIfOutOfRange(y);
 
-        return this.squares[x - 1, y - 1];
+        return _squares[x - 1, y - 1];
     }
 
     public readonly bool TryPlace(Square square, int x, int y)
@@ -22,22 +23,22 @@ public readonly struct Board : IEquatable<Board>
         ThrowIfOutOfRange(x);
         ThrowIfOutOfRange(y);
 
-        var val = this.GetValue(x, y);
+        Square val = GetValue(x, y);
 
         if (val == Square.Empty)
         {
-            this.squares[x - 1, y - 1] = square;
+            _squares[x - 1, y - 1] = square;
             return true;
         }
         return false;
     }
 
     public readonly string BoardString =>
-        GetSpaceDisplay(this.squares[0, 0]) + "|" + GetSpaceDisplay(this.squares[0, 1]) + "|" + GetSpaceDisplay(this.squares[0, 2]) + "" + Environment.NewLine +
+        GetSpaceDisplay(_squares[0, 0]) + "|" + GetSpaceDisplay(_squares[0, 1]) + "|" + GetSpaceDisplay(_squares[0, 2]) + "" + Environment.NewLine +
         "-----" + Environment.NewLine +
-        GetSpaceDisplay(this.squares[1, 0]) + "|" + GetSpaceDisplay(this.squares[1, 1]) + "|" + GetSpaceDisplay(this.squares[1, 2]) + "" + Environment.NewLine +
+        GetSpaceDisplay(_squares[1, 0]) + "|" + GetSpaceDisplay(_squares[1, 1]) + "|" + GetSpaceDisplay(_squares[1, 2]) + "" + Environment.NewLine +
         "-----" + Environment.NewLine +
-        GetSpaceDisplay(this.squares[2, 0]) + "|" + GetSpaceDisplay(this.squares[2, 1]) + "|" + GetSpaceDisplay(this.squares[2, 2]);
+        GetSpaceDisplay(_squares[2, 0]) + "|" + GetSpaceDisplay(_squares[2, 1]) + "|" + GetSpaceDisplay(_squares[2, 2]);
 
     private static void ThrowIfOutOfRange(int coord, [CallerArgumentExpression(nameof(coord))] string? paramName = null)
     {
@@ -73,11 +74,11 @@ public readonly struct Board : IEquatable<Board>
         _ => throw new NotImplementedException()
     };
 
-    public readonly bool Equals(Board other) => this.squares.Equals(other.squares);
+    public readonly bool Equals(Board other) => _squares.Equals(other._squares);
 
-    public override readonly bool Equals(object? obj) => obj is Board board && this.Equals(board);
+    public override readonly bool Equals(object? obj) => obj is Board board && Equals(board);
 
-    public override readonly int GetHashCode() => this.squares.GetHashCode();
+    public override readonly int GetHashCode() => _squares.GetHashCode();
 
     public static bool operator ==(Board left, Board right) => left.Equals(right);
 

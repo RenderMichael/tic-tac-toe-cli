@@ -10,7 +10,7 @@ if (args.Length == 0)
     PlayGame();
     return;
 }
-if (args.Length == 1 && args[0] is "--help" or "-h" or "-?")
+if (args is ["--help"] or ["-h"] or ["-?"])
 {
     TicTacToeHelpDisplayer.DisplayHelpMessage();
     return;

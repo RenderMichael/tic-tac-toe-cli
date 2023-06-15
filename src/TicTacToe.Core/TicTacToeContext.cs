@@ -1,6 +1,6 @@
-namespace Michael.TicTacToe.Core;
-
 using Michael.TicTacToe.Core.Interfaces;
+
+namespace Michael.TicTacToe.Core;
 
 public sealed record TicTacToeContext(
     string Title,

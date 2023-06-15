@@ -4,7 +4,7 @@ public static class TicTacToeHelpDisplayer
 {
     public static void DisplayHelpMessage()
     {
-        var help = $"""
+        string help = $"""
             Description:{Environment.NewLine}
               Plays a game of Tic-Tac-Toe. Controls are the with the number pad.{Environment.NewLine}{Environment.NewLine}
             Usage:{Environment.NewLine}

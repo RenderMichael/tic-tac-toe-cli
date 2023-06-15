@@ -1,24 +1,24 @@
-namespace Michael.TicTacToe.Core.Interfaces;
-
 using Michael.TicTacToe.Core.Components;
+
+namespace Michael.TicTacToe.Core.Interfaces;
 
 public sealed class WinnerCheckerManual : IWinnerCheckable
 {
     public bool CheckWinner(Board game, out Square winner)
     {
         // Horizontal victories
-        var spot11 = game.GetValue(1, 1);
-        var spot12 = game.GetValue(1, 2);
-        var spot13 = game.GetValue(1, 3);
+        Square spot11 = game.GetValue(1, 1);
+        Square spot12 = game.GetValue(1, 2);
+        Square spot13 = game.GetValue(1, 3);
         if (spot11 != Square.Empty && spot11 == spot12 && spot11 == spot13)
         {
             winner = spot11;
             return true;
         }
 
-        var spot21 = game.GetValue(2, 1);
-        var spot22 = game.GetValue(2, 2);
-        var spot23 = game.GetValue(2, 3);
+        Square spot21 = game.GetValue(2, 1);
+        Square spot22 = game.GetValue(2, 2);
+        Square spot23 = game.GetValue(2, 3);
 
         if (spot21 != Square.Empty && spot21 == spot22 && spot21 == spot23)
         {
@@ -26,9 +26,9 @@ public sealed class WinnerCheckerManual : IWinnerCheckable
             return true;
         }
 
-        var spot31 = game.GetValue(3, 1);
-        var spot32 = game.GetValue(3, 2);
-        var spot33 = game.GetValue(3, 3);
+        Square spot31 = game.GetValue(3, 1);
+        Square spot32 = game.GetValue(3, 2);
+        Square spot33 = game.GetValue(3, 3);
 
         if (spot31 != Square.Empty && spot31 == spot32 && spot31 == spot33)
         {
