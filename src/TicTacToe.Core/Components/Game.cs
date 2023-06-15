@@ -5,7 +5,7 @@ public sealed class Game
 {
     public Board Board { get; }
 
-    private readonly TicTacToeContext player;
+    private readonly TicTacToeContext context;
 
     private Square? winner;
 
@@ -13,19 +13,19 @@ public sealed class Game
 
     private bool lastTurnOccupied;
 
-    public Game(TicTacToeContext player)
+    public Game(TicTacToeContext context)
     {
-        this.player = player ?? throw new ArgumentNullException(nameof(player));
+        this.context = context ?? throw new ArgumentNullException(nameof(context));
         this.Board = new Board();
         this.InitializeWriter();
     }
 
     private void InitializeWriter()
     {
-        this.player.Writer.SetTitleMessage(this.player.TitleMessage);
-        this.player.Writer.SetTitle(this.player.Title);
-        this.player.Writer.Clear();
-        this.player.Writer.WriteTitleMessage();
+        this.context.Writer.SetTitleMessage(this.context.TitleMessage);
+        this.context.Writer.SetTitle(this.context.Title);
+        this.context.Writer.Clear();
+        this.context.Writer.WriteTitleMessage();
     }
 
     [MemberNotNullWhen(true, nameof(winner))]
@@ -33,7 +33,7 @@ public sealed class Game
     {
         get
         {
-            if (this.player.WinnerChecker.CheckWinner(this.Board, out var winner))
+            if (this.context.WinnerChecker.CheckWinner(this.Board, out var winner))
             {
                 this.winner = winner;
                 return true;
@@ -45,8 +45,8 @@ public sealed class Game
     public void DoTurn()
     {
         this.LogBoard();
-        var key = this.player.CharReader.ReadChar();
-        (var x, var y) = this.player.SquareSelector.ParseCoordinates(key);
+        var key = this.context.CharReader.ReadChar();
+        (var x, var y) = this.context.SquareSelector.ParseCoordinates(key);
 
         if (this.Board.TryPlace(this.currentTurn, x, y))
         {
@@ -61,19 +61,19 @@ public sealed class Game
 
     private void LogBoard()
     {
-        this.player.Writer.Reset();
+        this.context.Writer.Reset();
 
-        this.player.Writer.WriteLine($"It's {this.currentTurn}'s turn!");
-        this.player.Writer.WriteLine(this.Board.BoardString);
-        this.player.Writer.WriteLine("");
-        this.player.Writer.WriteLine(this.GetOccupationLog());
+        this.context.Writer.WriteLine($"It's {this.currentTurn}'s turn!");
+        this.context.Writer.WriteLine(this.Board.BoardString);
+        this.context.Writer.WriteLine("");
+        this.context.Writer.WriteLine(this.GetOccupationLog());
     }
 
     private string GetOccupationLog()
     {
         if (this.lastTurnOccupied)
         {
-            this.player.Writer.Beep();
+            this.context.Writer.Beep();
             return "Already occupied!";
         }
 
@@ -87,6 +87,6 @@ public sealed class Game
         var winner = this.winner ?? throw new InvalidOperationException("Cannot log winner of an incomplete game.");
 
         this.LogBoard();
-        this.player.Writer.WriteLine(winner is Square.Empty ? "Tie!" : $"The winner is {winner}!");
+        this.context.Writer.WriteLine(winner is Square.Empty ? "Tie!" : $"The winner is {winner}!");
     }
 }
