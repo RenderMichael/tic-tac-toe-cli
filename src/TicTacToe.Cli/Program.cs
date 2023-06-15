@@ -31,3 +31,7 @@ static void LogErrorMessage(string[] args)
     Console.WriteLine($"Unknown subcommand(s): {string.Join(' ', args)}");
     Console.WriteLine("Run the --help command for more info");
 }
+
+internal sealed partial class Program
+{
+}
